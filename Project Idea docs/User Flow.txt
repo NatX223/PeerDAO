@@ -1,0 +1,27 @@
+This document gives a detailed explaination/roadmap for user activity on the DAO and decentralised video platform.
+
+1. Joining the DAO
+i. The user visits the join DAO page
+ii. The user connects his/her wallet
+iii. The user uses the fil coins available to him to purchase the PED tokens
+iv. The user uses his/her PED tokens to join DAO
+
+2. Submitting Video proposals
+The prerequisite for this action is that the user must be a member of the DAO
+i. The DAO member submits a proposal which consists of The proposal title, proposal description and the video
+he/she wants to contribute to the DAO along with staking some PED tokens
+
+3. Voting on a proposal
+The prerequisite for this action is that the user must be a member of the DAO
+i. The DAO member clicks on a proposal
+ii. The DAO member goes through the proposal including watching the video
+iii. The DAO member votes for the proposal
+iv. If the propsal is succesfull, a storage deal for video is made by the DAO.
+* The video would now be available to be watched by non members of the DAO on a pay per view basis
+
+4. Watching DAO videos
+i. The user visits the DAO's video page
+ii. The user selects the video he wants to watch
+iii. A small of amount of PED token is paid by the user to the DAO and then watches the video
+iv. The amount paid by the user is built into two, one part goes to members of the DAO with the majority going to the creator of the video.
+    The second part is stored in the DAO contract to continously fund storage deals and uploading of other videos

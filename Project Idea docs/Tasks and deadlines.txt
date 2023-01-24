@@ -1,0 +1,33 @@
+Tasks - deadlines
+
+segment - Smart contracts
+Assignee - NatX
+
+creation of DAO token contract - 23/1
+creation of DAO contract(proposal and voting mechanisms) - 28/1
+integration of storage deals in smart contracts - 30/1
+
+segment - backend
+Assignee - Song
+
+uploading of files with Lighthouse - 
+fetching of videos using livepeer - 
+sending notifications when proposals are made using push protocol - 
+
+segment - frontend
+Assignee - Electrone and NatX
+creation of join DAO page - 
+creation of submit proposal page -
+creation of all proposals page -
+creation of streaming page -
+creation of frontend logic - 1/2 - NatX
+
+segment - design
+Assignee - NatX
+design of join DAO page - 23/1
+design of submit proposal page - 24/1
+design of all proposals page - 25/1
+design of streaming page - 26/1
+
+Please note, these deadlines are flexible and can be shifted based on availability however the deadline for integrations of all components and making the videos is 5/2.
+please edit this document with your various deadlines based on your schedules and availabilty.

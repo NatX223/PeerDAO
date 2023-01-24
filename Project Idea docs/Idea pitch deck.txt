@@ -1,0 +1,35 @@
+This document is the pitch deck for the idea behind the PeerDAO project.
+It will contain what the idea is and how it can be implemented.
+
+The concept.
+
+PeerDAO is modeled as DAO first and foremost, this entails that the functioning of the platform
+is controlled by the members of the DAO. PeerDAO also takes advantage of the filecoin and FVM platforms to make a data centered DAO - A dataDAO in essence.
+The central data for the the DAO is video content, but it also emcompases various other components of videos like scripts backgroound music and stock photos.
+
+The DAO aims to help content creators form a decentralised video platform where their data can be stored permanently and also earn for every view that their videos gain, while
+giving them the control over the platform. PeerDAO will also store the videos on behalf of the content creators by making storage deals for all videos and other data contributed to the DAO.
+
+Aims and Objectives
+
+1. To provide a platform for creatives to contribute meaningfully to.
+2. To curate a wide range of quality content.
+3. To ensure permanency of data contributed to the DAO.
+
+How it works
+
+This is a very high level and brief explanation of how PeerDAO is intended to work.
+1. user buys the DAO tokens
+2. user becomes a member of the DAO by using his tokens to join
+3. user proposes his content to the DAO
+4. members of the DAO assess proposals and vote which ones will be added to the DAO
+5. 4 above can be bypassed if the user contributes a substantial amount to the DAO
+6. if the proposal is accepted, a storage deal for the video is made by the DAO and the content is uploaded to the video streaming platform.
+7. other users visit the video streaming platform and watches videos - paying per view.
+8. the revenue generated from the video streaming platform will distributed to the DAO members and some parts of the revenue goes towards storing the data and preserving it permanently.
+
+Use of FVM and Filecoin
+
+The filecoin ecosystem is very critical for PeerDAO because it is the leading decentralised storage network that can provide the permanent data storage that PeerDAO requires.
+We also utilizes the filecoin virtual machine for the smart contracts and creation of storage deals and renewals of those deals for the DAO, thus helping it acheive the data permanence needed for the DAO.
+The selection of the FVM is also a good choice because solidity smart contracts can run on it thus making it easy to develop on, considering the amount of development resources already available.
