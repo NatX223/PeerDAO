@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 // INTERFACES
 
 interface IERC20 {
@@ -11,12 +13,13 @@ interface IERC20 {
 
 contract PeerDAO {
 
+    using Counters for Counters.Counter; // OpenZepplin Counter
+    Counters.Counter private _proposalCount; // Counter For Posts
+
     // VARIABLES
     IERC20 peerToken;
     uint joinAmount;
     uint contributionAmount;
-    // use counter library instead
-    uint proposalCount;
     uint successThreshold;
 
     // DATA STRUCTURES
@@ -26,15 +29,18 @@ contract PeerDAO {
     mapping (uint => Proposal) Proposals;
     mapping (uint => uint) conPropCount;
     mapping (uint => bool) exists;
+    mapping (uint => proposalCore) state;
     
     // implement proposal core struct with
-    // start time
-    // end time
-    // success
-    // executed
-    // failed
+    struct proposalCore {
+        uint startTime;
+        uint deadline;
+        bool executed;
+        bool failed;
+        bool succeded;
+    }
 
-    // implement automatic executed of proposals if proposal reaches theshhold
+    enum proposalState {active, executed, failed, succeded}
 
     // proposal struct
     struct Proposal {
@@ -42,13 +48,17 @@ contract PeerDAO {
         string description;
         string contentHash;
         uint forVotes;
-        bool pending;
-        uint createionTime;
-        bool executed;
-        bool failed;
         mapping (address => bool) voters;
     }
 
+    // struct of a member
+    struct Member {
+        address memberAddress;
+        string role;
+    }
+
+    // the array of all DAO members
+    Member[] allMembers;
 
     // EVENTS
     
@@ -88,12 +98,12 @@ contract PeerDAO {
 
     // modifier to ensure that the user has enough tokens to make a proposal
     modifier isStillActive(uint proposalId) {
-        require(Proposals[proposalId].pending == true);
+        require(getState(proposalId) == proposalState.active);
         _;
     }
 
     // modifier to ensure that the user has enough tokens to make a proposal
-    modifier ideaExists(uint proposalId) {
+    modifier proposalExists(uint proposalId) {
         require(exists[proposalId] == true);
         _;
     }
@@ -107,25 +117,33 @@ contract PeerDAO {
     // PUBLIC FUNCTIONS
 
     // function for a member to join the DAO
-    function joinDAO (string memory _profile) public hasTokens {
+    function joinDAO (string memory _role) public hasTokens {
         peerToken.transferFrom(msg.sender, address(this), joinAmount);
         members[msg.sender] = true;
-        profile[msg.sender] = _profile;
+
+        Member member;
+
+        member = Member(msg.sender, _role);
+        allMembers.push(member);
 
         emit joinsDAO(msg.sender, block.timestamp);
     }
 
     // function to create contribution proposal
-    function createIdeaProposal(string memory _contentHash, string memory details) public {
+    function createProposal(string memory _contentHash, string memory details) public hasContributionTokens {
         peerToken.transferFrom(msg.sender, address(this), contributionAmount);
-        proposalCount = proposalCount + 1;
-
-        Proposals[proposalCount].createionTime = block.timestamp;
+        
+        _proposalCount.increment();
+        uint256 proposalCount = _proposalCount.current(); 
         Proposals[proposalCount].contentHash = _contentHash;
         Proposals[proposalCount].description = details;
         Proposals[proposalCount].forVotes = 0;
-        Proposals[proposalCount].pending = true;
         Proposals[proposalCount].proposer = msg.sender;
+
+        state[proposalCount].startTime = block.timestamp;
+        state[proposalCount].deadline = block.timestamp + 2 weeks;
+        state[proposalCount].executed = false;
+        state[proposalCount].failed = false;
 
         exists[proposalCount] = true;
         
@@ -133,10 +151,35 @@ contract PeerDAO {
     }
 
     // function for user to cast vote for a contribution proposal
-    function voteContribution(uint proposalId) public hasNotVoted(proposalId) isStillActive(proposalId) ideaExists(proposalId) isMemeber {
+    function voteContribution(uint proposalId) public hasNotVoted(proposalId) isStillActive(proposalId) proposalExists(proposalId) isMemeber {
         Proposals[proposalId].voters[msg.sender] = true;
         Proposals[proposalId].forVotes = Proposals[proposalId].forVotes + 1;
+
+        // update the forvotes for every vote
+        // check if the votes are enough 
+        // if they are execute automatically
+        // check and fail automatically 
         
+    }
+
+    // function to get the state of a proposal
+    function getState(uint proposalId) public view returns(proposalState) {
+
+        if (state[proposalId].deadline > block.timestamp) {
+            return proposalState.active;
+        }
+
+        if (state[proposalId].executed) {
+            return proposalState.executed;
+        }
+        
+        if (state[proposalId].succeded) {
+            return proposalState.succeded;
+        }
+
+        if (state[proposalId].failed) {
+            return proposalState.failed;
+        }
     }
 
 }
