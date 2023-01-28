@@ -14,13 +14,17 @@ interface IERC20 {
 contract PeerDAO {
 
     using Counters for Counters.Counter; // OpenZepplin Counter
-    Counters.Counter private _proposalCount; // Counter For Posts
+    Counters.Counter private _proposalCount; // Counter For Proposals
+
+    using Counters for Counters.Counter; // OpenZepplin Counter
+    Counters.Counter private _videoCount; // Counter For videos acceptedby the DAO
 
     // VARIABLES
     IERC20 peerToken;
     uint joinAmount;
     uint contributionAmount;
     uint successThreshold;
+    uint accessAmount;
 
     // DATA STRUCTURES
 
@@ -31,6 +35,7 @@ contract PeerDAO {
     mapping (uint => bool) exists;
     mapping (uint => mapping (address => bool)) voted;
     mapping (uint => proposalCore) state;
+    mapping (uint => mapping (address => bool)) access;
     
     // implement proposal core struct with
     struct proposalCore {
@@ -60,6 +65,7 @@ contract PeerDAO {
 
     // struct of an approved
     struct Video {
+        uint id;
         address poster;
         string description;
         string contentHash;
@@ -81,7 +87,7 @@ contract PeerDAO {
     event joinsDAO(address account, uint timestamp);
     event proposalCreated(address proposer, string content);
 
-    constructor(address _tokenAddress, uint _joinAmount, uint _contributionAmount, uint _successThreshold) {
+    constructor(address _tokenAddress, uint _joinAmount, uint _contributionAmount, uint _successThreshold, uint _accessAmount) {
 
         // INITIALIZATIONS
         peerToken = IERC20(_tokenAddress);
@@ -89,6 +95,7 @@ contract PeerDAO {
         contributionAmount = _contributionAmount;
         successThreshold = _successThreshold;
         admin = msg.sender;
+        accessAmount = _accessAmount;
         
     }
 
@@ -231,9 +238,11 @@ contract PeerDAO {
         string memory description = Proposals[proposalId].description;
         string memory contentHash = Proposals[proposalId].contentHash;
 
+        _videoCount.increment();
+        uint videoId = _videoCount.current();
         // contruct a Video struct
         Video memory video;
-        video = Video(poster, description, contentHash);
+        video = Video(videoId, poster, description, contentHash);
 
         // push video to array
         allVideos.push(video);
@@ -244,9 +253,12 @@ contract PeerDAO {
     }
 
         // function to execute a proposal
-    function executeProposalAdmin (uint proposalId) public {
+        function executeProposalAdmin (uint proposalId) public {
         require(msg.sender == admin, "You are authorized to call this function");
         
+        _videoCount.increment();
+        uint videoId = _videoCount.current();
+
         // retreive details
         address poster = Proposals[proposalId].proposer;
         string memory description = Proposals[proposalId].description;
@@ -254,7 +266,7 @@ contract PeerDAO {
 
         // contruct a Video struct
         Video memory video;
-        video = Video(poster, description, contentHash);
+        video = Video(videoId, poster, description, contentHash);
 
         // push video to array
         allVideos.push(video);
@@ -266,8 +278,28 @@ contract PeerDAO {
 
     // function to check if a user is a member of the DAO
     // to be used in access control
-    function isMember() public view returns(bool) {
+    function isMember() internal view returns(bool) {
         return members[msg.sender];
+    }
+
+    // function to get acccess for a video
+    function getAccess(uint videoId) public {
+        peerToken.transferFrom(msg.sender, address(this), accessAmount);
+
+        access[videoId][msg.sender] = true;
+    }
+
+    // function to determine if  user can view a video or not
+    // to be used for access control
+    function accessible(uint videoId) public view returns (bool) {
+        bool _member = isMember();
+        bool _access = access[videoId][msg.sender];
+        if (_member == true || _access == true) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }
