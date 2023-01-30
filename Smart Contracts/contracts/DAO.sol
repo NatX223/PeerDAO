@@ -189,10 +189,6 @@ contract PeerDAO {
         if (Proposals[proposalId].forVotes >= successThreshold) {
             executeProposal(proposalId);
         }
-        // update the forvotes for every vote
-        // check if the votes are enough
-        // if they are execute automatically
-        // check and fail automatically 
         
     }
 
@@ -226,10 +222,10 @@ contract PeerDAO {
         return allProposals;
     }
 
-    // // function to return all videos
-    // function getAllvideos() public view returns(Video[] memory) {
-        
-    // }
+    // function to return all videos
+    function getAllvideos() public view returns(Video[] memory) {
+        return allVideos;
+    }
 
     // function to execute a proposal
     function executeProposal (uint proposalId) internal {
@@ -283,8 +279,10 @@ contract PeerDAO {
     }
 
     // function to get acccess for a video
-    function getAccess(uint videoId) public {
-        peerToken.transferFrom(msg.sender, address(this), accessAmount);
+    function getAccess(uint videoId) public payable {
+        require(msg.value == accessAmount, "You need to pay the specified amount to access the video");
+
+        // send received fil to dao vault
 
         access[videoId][msg.sender] = true;
     }

@@ -11,17 +11,19 @@ contract peerToken is ERC20 {
     address owner;
     uint ownerSupply = 10000 * (10 ** 18);
 
-    constructor() ERC20("PeerDAO", "PED") {
+
+    constructor(string memory _name, string memory  _symbol) ERC20(_name, _symbol) {
         owner = msg.sender;
 
         _mint(msg.sender, ownerSupply);
     }
 
-    function buyToken() public payable {
+    function buyToken() public payable  {
         require(totalSupply() <= maxSupply, "token supply limit has been reached");
         uint mintAnount = msg.value / 100;
 
         _mint(msg.sender, mintAnount);
+
     }
 
     function mintOwner() public {
