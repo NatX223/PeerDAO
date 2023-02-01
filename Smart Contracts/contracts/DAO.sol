@@ -156,8 +156,6 @@ contract PeerDAO {
 
     // function to create contribution proposal
     function createProposal(string memory _contentHash, string memory details) public hasContributionTokens {
-        peerToken.transferFrom(msg.sender, address(this), contributionAmount);
-        
         _proposalCount.increment();
         uint256 proposalCount = _proposalCount.current();
 
@@ -223,7 +221,7 @@ contract PeerDAO {
     }
 
     // function to return all videos
-    function getAllvideos() public view returns(Video[] memory) {
+    function getAllVideos() public view returns(Video[] memory) {
         return allVideos;
     }
 
