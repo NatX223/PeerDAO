@@ -7,8 +7,8 @@ import { tokencontractabi } from "./tokenContractABI.js";
 var signer; // ethers.js object for calling functions
 var address; // the address of the user
 
-const DAOContractAddress = "address of DAO contract";
-const tokenContractAddress = "address of token contract";
+const DAOContractAddress = "0xdeaF0f54F0E9897F53e7bFdc222419F2cEC4F5d1";
+const tokenContractAddress = "0xb8F41783C0476e48Cf7DC468D1Fe67f57C3393E4";
 
 const tokenContract = new ethers.Contract(tokenContractAddress, tokencontractabi, signer);
 const DAOContract = new ethers.Contract(DAOContractAddress, DAOcontractabi, signer);
@@ -64,7 +64,7 @@ async function voteProposal(id) {
 // videoId should be int
 async function obtainAccess(videoId) {
     // calling the smart contract to grant access
-    await DAOContract.getAccess(videoId, { value: ethers.utils.parseUnits("0.1", "ether")} );
+    await DAOContract.getAccess(videoId, { value: ethers.utils.parseUnits("0.5", "ether")} );
 }
 
 // function to watch a particular video
@@ -104,6 +104,14 @@ async function getVideos() {
     // id -- used to gain access to a video
     // poster -- the address of the owner of the video
     // description -- brief desription of the video
-    // contentHash -- the cid/hash of the video, to be decrypted and viewed by DAO members
+    // contentHash -- the cid/hash of the video, to be decrypted and viewed by DAO members6
+}
 
+// function to purchase PED tokens
+// amount should be of type int
+async function getPEDtokens(amount) {
+
+   await tokenContract.buyToken({value: ethers.utils.parseUnits(amount, "ether")});
+
+   // display success message
 }

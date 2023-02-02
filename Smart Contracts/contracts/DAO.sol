@@ -87,10 +87,10 @@ contract PeerDAO {
     event joinsDAO(address account, uint timestamp);
     event proposalCreated(address proposer, string content);
 
-    constructor(address _tokenAddress, uint _joinAmount, uint _contributionAmount, uint _successThreshold, uint _accessAmount) {
+    constructor(uint _joinAmount, uint _contributionAmount, uint _successThreshold, uint _accessAmount) {
 
         // INITIALIZATIONS
-        peerToken = IERC20(_tokenAddress);
+        peerToken = IERC20(0xb8F41783C0476e48Cf7DC468D1Fe67f57C3393E4);
         joinAmount = _joinAmount;
         contributionAmount = _contributionAmount;
         successThreshold = _successThreshold;
