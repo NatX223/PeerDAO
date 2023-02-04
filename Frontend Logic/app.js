@@ -7,8 +7,8 @@ import { tokencontractabi } from "./tokenContractABI.js";
 var signer; // ethers.js object for calling functions
 var address; // the address of the user
 
-const DAOContractAddress = "0xdeaF0f54F0E9897F53e7bFdc222419F2cEC4F5d1";
-const tokenContractAddress = "0xb8F41783C0476e48Cf7DC468D1Fe67f57C3393E4";
+const DAOContractAddress = "0x283dFE6F7CdE5bc9C99712DE1Fe9979452E68252";
+const tokenContractAddress = "0x283dFE6F7CdE5bc9C99712DE1Fe9979452E68252";
 
 const tokenContract = new ethers.Contract(tokenContractAddress, tokencontractabi, signer);
 const DAOContract = new ethers.Contract(DAOContractAddress, DAOcontractabi, signer);
@@ -25,8 +25,8 @@ async function connectWallet() {
 }
 
 // function to join DAO
-// role to be string
-async function enterDAO(role) {
+async function enterDAO() {
+    const role = "member";
     // The join amount
     const _joinAmount = 50 * (10 * 18);
     const joinAmount = BigInt(_joinAmount);
@@ -108,10 +108,12 @@ async function getVideos() {
 }
 
 // function to purchase PED tokens
-// amount should be of type int
-async function getPEDtokens(amount) {
+// _amount should be of type int
+async function getPEDtokens(_amount) {
+   const amount = _amount * (10 ** 18);
+   const purchaseAmount = BigInt(amount);
 
-   await tokenContract.buyToken({value: ethers.utils.parseUnits(amount, "ether")});
+   await tokenContract.buyToken({value: purchaseAmount});
 
    // display success message
 }

@@ -20,7 +20,7 @@ contract peerToken is ERC20 {
 
     function buyToken() public payable  {
         require(totalSupply() <= maxSupply, "token supply limit has been reached");
-        uint mintAnount = msg.value / 100;
+        uint mintAnount = msg.value * 100;
 
         _mint(msg.sender, mintAnount);
 

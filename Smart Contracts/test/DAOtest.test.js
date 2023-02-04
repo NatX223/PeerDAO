@@ -36,7 +36,9 @@ const {
 
         const balance = token.balanceOf(owner.address);
 
-        return { owner, otherAccount, token, tokenAddress, daocontract, balance, DAOaddress, joinAmount, contributionAmount }
+        const amount = 5;
+
+        return { purchaseAmount, amount, owner, otherAccount, token, tokenAddress, daocontract, balance, DAOaddress, joinAmount, contributionAmount }
     }
 
     describe("JoinDAO", function () {
@@ -51,6 +53,19 @@ const {
           const allMembers = await daocontract.getAllMembers();
         
           console.log(balance, allMembers);
+        });
+      });
+
+      describe("buyToken", function () {
+        it("should buy token successfully", async function () {
+          const { token, amount, owner } = await loadFixture(LoadFixture);
+          const _amount = amount * (10 ** 18);
+          const purchaseAmount = BigInt(_amount);
+          await token.buyToken({value: purchaseAmount});
+          
+          const balance = token.balanceOf(owner.address);
+
+          console.log(balance);
         });
       });
 

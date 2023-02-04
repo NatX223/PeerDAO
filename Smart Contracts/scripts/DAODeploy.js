@@ -11,7 +11,7 @@ async function main() {
     const _accessAmount = 0.5 * (10 ** 18);
     const accessAmount = BigInt(_accessAmount);
 
-  const DAOContract = await hre.ethers.getContractFactory("peerToken");
+  const DAOContract = await hre.ethers.getContractFactory("peerDAO");
   const daocontract = await DAOContract.deploy(tokenAddress, joinAmount, contributionAmount, successThreshold, accessAmount);
 
   await daocontract.deployed();
