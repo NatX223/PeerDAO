@@ -7,8 +7,8 @@ import { tokencontractabi } from "./tokenContractABI.js";
 var signer; // ethers.js object for calling functions
 var address; // the address of the user
 
-const DAOContractAddress = "0x283dFE6F7CdE5bc9C99712DE1Fe9979452E68252";
-const tokenContractAddress = "0x283dFE6F7CdE5bc9C99712DE1Fe9979452E68252";
+const DAOContractAddress = "0x460AF973B07cF15397419149bfeFE353A749c1d5";
+const tokenContractAddress = "0x30444Fc39CC4A987C65Ad6BEeB2e37Cc0Dcb8594";
 
 const tokenContract = new ethers.Contract(tokenContractAddress, tokencontractabi, signer);
 const DAOContract = new ethers.Contract(DAOContractAddress, DAOcontractabi, signer);
@@ -64,7 +64,7 @@ async function voteProposal(id) {
 // videoId should be int
 async function obtainAccess(videoId) {
     // calling the smart contract to grant access
-    await DAOContract.getAccess(videoId, { value: ethers.utils.parseUnits("0.5", "ether")} );
+    await DAOContract.getAccess(videoId, { value: ethers.utils.parseUnits("0.1", "ether")} );
 }
 
 // function to watch a particular video
