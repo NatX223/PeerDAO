@@ -7,8 +7,8 @@ import { tokencontractabi } from "./tokenContractABI.js";
 var signer; // ethers.js object for calling functions
 var address; // the address of the user
 
-const DAOContractAddress = "0x460AF973B07cF15397419149bfeFE353A749c1d5";
-const tokenContractAddress = "0x30444Fc39CC4A987C65Ad6BEeB2e37Cc0Dcb8594";
+const DAOContractAddress = "0xc9f770f25449064183847aCD7138396771faCAa9";
+const tokenContractAddress = "0xAbAdA458A67c27CF5F3BFFba00fA0EC76eF6a16F";
 
 const tokenContract = new ethers.Contract(tokenContractAddress, tokencontractabi, signer);
 const DAOContract = new ethers.Contract(DAOContractAddress, DAOcontractabi, signer);
@@ -68,7 +68,8 @@ async function obtainAccess(videoId) {
 }
 
 // function to watch a particular video
-async function watchVideo(vidId) {
+// vidCID gotten from the upload 
+async function watchVideo(vidId, vidCID) {
     // decrypt video with Lighthouse by calling the accessible function of the smart contract by passing in the videoId as function parameter
 
 }
