@@ -8,4 +8,5 @@ typechain-types
 # Hardhat files
 cache
 artifacts
-
+hardhat.config.js
+Smart Contracts/hardhat.config.js

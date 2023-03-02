@@ -16,7 +16,6 @@ contract PeerDAO {
     using Counters for Counters.Counter; // OpenZepplin Counter
     Counters.Counter private _proposalCount; // Counter For Proposals
 
-    using Counters for Counters.Counter; // OpenZepplin Counter
     Counters.Counter private _videoCount; // Counter For videos acceptedby the DAO
 
     // VARIABLES
@@ -70,6 +69,9 @@ contract PeerDAO {
         string description;
         string contentHash;
     }
+
+    // mapping of videos
+    mapping (uint => Video) Videos;
 
     // the array of all DAO members
     Member[] allMembers;
@@ -242,6 +244,8 @@ contract PeerDAO {
         // push video to array
         allVideos.push(video);
 
+        Videos[videoId] = video;
+
         // change state of proposal to executed
         state[proposalId].succeded = true;
         state[proposalId].executed = true;
@@ -280,10 +284,19 @@ contract PeerDAO {
     // function to get acccess for a video
     function getAccess(uint videoId) public payable {
         require(msg.value == accessAmount, "You need to pay the specified amount to access the video");
+        uint DAOfee = msg.value / 20;
+        uint creatorRev = msg.value - DAOfee;
 
-        // send received fil to dao vault
+        address author = Videos[videoId].poster;
+        (bool sent, bytes memory data) = author.call{value: creatorRev}("");
 
-        access[videoId][msg.sender] = true;
+        if (sent == true) {
+            access[videoId][msg.sender] = true;
+        }
+
+        else {
+            access[videoId][msg.sender] = false;
+        }
     }
 
     // function to determine if  user can view a video or not
